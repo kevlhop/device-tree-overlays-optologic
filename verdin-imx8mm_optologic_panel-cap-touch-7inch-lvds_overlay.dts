@@ -1,0 +1,115 @@
+
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright © 2025 OPTO logic Tenchnology S.A.
+ * Author: Enguerrand de Ribaucourt <enguerrand.de.ribaucourt@savoirfairelinux.com>
+ */
+
+// Verdin iMX8M Mini single-channel LVDS
+// Extends verdin-imx8mm_dsi-to-lvds_panel-cap-touch-10inch-lvds_overlay.dts
+// And verdin-imx8mm_panel-cap-touch-10inch-dsi_overlay.dts for the touchscreen example
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pwm/pwm.h>
+#include "imx8mm-pinfunc.h"
+
+/ {
+	compatible = "toradex,verdin-imx8mm";
+};
+
+#include "verdin-imx8_mipi-dsi-to-sn65dsi84.dtsi"
+
+&backlight {
+	status = "okay";
+	/* Verdin PWM_3 (SODIMM 16) */
+	pwms = <&pwm3 0 6666667 0>;
+};
+
+&gpu {
+	status = "okay";
+};
+
+/* Verdin I2C_1 */
+&i2c4 {
+	status = "okay";
+};
+
+&lcdif {
+	status = "okay";
+};
+
+&{/} {
+	panel_dpi: panel_dpi { /*name to keep the compatibilty with colibri panel*/
+		compatible = "panel-lvds";
+		backlight = <&backlight>;
+		data-mapping = "vesa-24";
+		port {
+			panel_lvds_native_in: endpoint {
+				remote-endpoint = <&lvds_out_panel>;
+			};
+		};
+	};
+};
+
+&lvds_ti_sn65dsi84 {
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@2 {
+			reg = <2>;
+
+			lvds_out_panel: endpoint {
+				remote-endpoint = <&panel_lvds_native_in>;
+			};
+		};
+	};
+};
+
+/* Verdin I2C_2_DSI */
+&i2c2 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+	clock-frequency = <100000>;
+	touch@26 {
+		compatible = "ilitek,ili2117";
+		reg = <0x26>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio &pinctrl_i2s_2_sync_gpio>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <22 IRQ_TYPE_EDGE_RISING>;
+		reset-gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
+        status = "okay";
+	};
+};
+
+&reg_dsi_lvds {
+	/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
+	gpio = <&gpio5 1 GPIO_ACTIVE_HIGH>;
+};
+
+&iomuxc {
+	pinctrl_i2s_2_d_in_gpio: gpio3io21grp {
+		fsl,pins =
+			<MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21 0x1c4>;	/* SODIMM 48 */
+	};
+
+	pinctrl_i2s_2_sync_gpio: gpio3io22grp {
+		fsl,pins =
+			<MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22 0x184>;	/* SODIMM 44 */
+	};
+};
+
+/* Verdin PWM_2 SODIMM 16 */
+&pwm3 {
+	status = "okay";
+};
+
+#include "display-scx7.dtsi"

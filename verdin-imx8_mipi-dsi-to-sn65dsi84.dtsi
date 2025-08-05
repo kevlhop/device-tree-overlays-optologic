@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2022 Toradex
+ */
+// Original code from https://git.toradex.com/cgit/device-tree-overlays.git/plain/overlays/verdin-imx8_mipi-dsi-to-sn65dsi84.dtsi?h=toradex_6.6-2.2.x-imx
+
+// Common Code to setup MIPI DSI to SN65DSI84
+
+#include <dt-bindings/gpio/gpio.h>
+
+&{/} {
+	reg_dsi_lvds: regulator-dsi-lvds {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		regulator-boot-on;
+		regulator-name = "DSI_1_PWR_EN";
+	};
+};
+
+&lvds_ti_sn65dsi84 {
+	vcc-supply = <&reg_dsi_lvds>;
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+
+			dsi84_in: endpoint {
+				remote-endpoint = <&mipi_dsi_bridge1_out>;
+				data-lanes = <1 2 3 4>;
+			};
+		};
+	};
+};
+
+&mipi_dsi {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	port@1 {
+		mipi_dsi_bridge1_out: endpoint {
+			attach-bridge;
+			remote-endpoint = <&dsi84_in>;
+		};
+	};
+};
