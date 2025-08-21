@@ -1,0 +1,110 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Common LVDS/backlight/enablement for Colibri iMX8XQP Optologic panels
+ */
+
+// Enable the parallel RGB interface on the Colibri iMX8X which communicates
+// through X1 SODIMM connector, with the LVDS transceiver on the Iris v2.0A
+// connected with an OPTO Logic capacitive touch 7" LVDS display.
+
+// Based on similar colibri-imx8x_panel-cap-touch-10inch-lvds_overlay.dts
+
+/ {
+    compatible = "toradex,colibri-imx8x";
+};
+
+&backlight {
+    // Polarity not inverted on our backlight
+    pwms = <&adma_pwm 0 6666667 0>;
+};
+
+&i2c1 {
+    status = "okay";
+    #address-cells = <2>;
+    #size-cells = <1>;
+    clock-frequency = <100000>;
+};
+
+// Enable the parallel RGB interface on Colibri iMX8X and the LVDS tranceiver on Iris v2.0
+&{/} {
+    panel_dpi: panel-dpi {
+        compatible = "panel-dpi";
+        backlight = <&backlight>;
+        data-mapping = "bgr666";
+        power-supply = <&reg_module_3v3>;
+
+        port {
+            lcd_panel_in: endpoint {
+                remote-endpoint = <&display_lcdfif_out>;
+            };
+        };
+    };
+};
+
+&adma_pwm {
+    status = "okay";
+};
+
+&adma_pwm_lpcg {
+    status = "okay";
+};
+
+&backlight {
+    status = "okay";
+};
+
+&display_lcdif {
+    #address-cells = <1>;
+    #size-cells = <0>;
+    status = "okay";
+
+    port@0 {
+        reg = <0>;
+
+        lcd_display_in: endpoint {
+            remote-endpoint = <&dpu_disp1_lcdif>;
+        };
+    };
+
+    port@1 {
+        reg = <1>;
+
+        display_lcdfif_out: endpoint {
+            remote-endpoint = <&lcd_panel_in>;
+        };
+    };
+};
+
+&dpu1 {
+    #address-cells = <1>;
+    #size-cells = <0>;
+
+    port@1 {
+        reg = <1>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        dpu_disp1_lcdif: endpoint@3 {
+            reg = <3>;
+            remote-endpoint = <&lcd_display_in>;
+        };
+    };
+};
+
+/* Need to be disabled due to overlapped pins SODIMM_55, SODIMM_63 */
+&flexcan2 {
+    status = "disabled";
+};
+
+&lsio_gpio1 {
+    /*
+    * This switches the LVDS transceiver to the single-channel
+    * output mode.
+    */
+    LVDS_MODE {
+        gpio-hog;
+        gpios = <18 GPIO_ACTIVE_HIGH>;
+        output-high;
+        line-name = "LVDS_MODE";
+    };
+};
