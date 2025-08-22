@@ -18,6 +18,7 @@ kernel architecture and version. For example:
 We currently support the following Toradex SoMs:
  - `verdin-am62`
  - `verdin-imx8mp`
+ - `colibri-imx8x` (Requires Iris v2.0 carrier board)
 
 These may be combined with the following OPTO Logic displays:
  - `5-inch` with capacitive touchscreen
