@@ -1,0 +1,34 @@
+
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright © 2025 OPTO logic Tenchnology S.A.
+ * Author: Enguerrand de Ribaucourt <enguerrand.de.ribaucourt@savoirfairelinux.com>
+ */
+
+// Verdin iMX8M Mini single-channel LVDS
+// Extends verdin-imx8mm_dsi-to-lvds_panel-cap-touch-10inch-lvds_overlay.dts
+// And verdin-imx8mm_panel-cap-touch-10inch-dsi_overlay.dts for the touchscreen example
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pwm/pwm.h>
+#include "imx8mm-pinfunc.h"
+
+#include "verdin-imx8mm_optologic_lvds.dtsi"
+#include "display-scx10.dtsi"
+
+&i2c2 {
+	touch@26 {
+		compatible = "ilitek,ili251x";
+		reg = <0x26>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio &pinctrl_i2s_2_sync_gpio>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <22 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
+        status = "okay";
+	};
+};
