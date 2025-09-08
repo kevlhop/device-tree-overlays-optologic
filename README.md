@@ -22,17 +22,17 @@ We currently support the following Toradex SoMs:
  - `colibri-imx8x` (Requires Iris v2.0 carrier board)
 
 These may be combined with the following OPTO Logic displays:
- - `5-inch` with capacitive touchscreen
- - `7-inch` with capacitive touchscreen
- - `10-inch` with capacitive touchscreen
+ - 5 inches (SCX0500132GGC06) with capacitive touchscreen (ILI2131)
+ - 7 inches (SCX0700117GGC03) with capacitive touchscreen (ILI2117A)
+ - 10.1 inches (SCX1001511GGC49) with capacitive touchscreen (ILI2511)
 
 ## Driver support
 
 Make that your Linux configuration enables, or includes as modules the following
 touchscreen drivers:
 
-- `ilitek_ts_i2c` for the 5-inch display
-- `ili210x` for the 7-inch and 10-inch displays
+- `ilitek_ts_i2c` for the 5" display
+- `ili210x` for the 7" and 10.1" displays
 
 ## Compiling with Yocto
 
