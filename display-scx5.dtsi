@@ -5,7 +5,7 @@
  * Author: Dina Gomes Dias <dina.gomes@tecinvent.ch>
  */
 
-// SCX 5inch LVDS Display Dimensions and Timing
+// SCX 5inch LVDS Display Dimensions and Timing (SCX0500132GGC06)
 
 &panel_dpi {
 	status = "okay";

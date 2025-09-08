@@ -5,7 +5,7 @@
  * Author: Dina Gomes Dias <dina.gomes@tecinvent.ch>
  */
 
-// SCX 7inch LVDS Display Dimensions and Timing
+// SCX 7inch LVDS Display Dimensions and Timing (SCX0700117GGC03)
 
 &panel_dpi {
 	status = "okay";
