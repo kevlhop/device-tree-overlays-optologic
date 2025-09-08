@@ -5,7 +5,7 @@
  * Author: Enguerrand de Ribaucourt <enguerrand.de.ribaucourt@savoirfairelinux.com>
  */
 
-// Verdin iMX8M Mini single-channel LVDS
+// Verdin iMX8M Mini single-channel LVDS for 10.1 inch OPTO Logic display (SCX1001511GGC49)
 // Extends verdin-imx8mm_dsi-to-lvds_panel-cap-touch-10inch-lvds_overlay.dts
 // And verdin-imx8mm_panel-cap-touch-10inch-dsi_overlay.dts for the touchscreen example
 
@@ -18,16 +18,16 @@
 #include "imx8mm-pinfunc.h"
 
 #include "verdin-imx8mm_optologic_lvds.dtsi"
-#include "display-scx5.dtsi"
+#include "display-scx10.dtsi"
 
 &i2c2 {
-	touch@41 {
-		compatible = "ilitek,ili2132";
-		reg = <0x41>;
+	touch@26 {
+		compatible = "ilitek,ili251x";
+		reg = <0x26>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio &pinctrl_i2s_2_sync_gpio>;
 		interrupt-parent = <&gpio3>;
-		interrupts = <22 IRQ_TYPE_EDGE_RISING>;
+		interrupts = <22 IRQ_TYPE_EDGE_FALLING>;
 		reset-gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
         status = "okay";
 	};

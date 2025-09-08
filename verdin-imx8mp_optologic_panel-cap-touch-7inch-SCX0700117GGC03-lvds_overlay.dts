@@ -5,7 +5,7 @@
  * Author: Dina Gomes Dias <dina.gomes@tecinvent.ch>
  */
 
-// Verdin iMX8M Plus single-channel LVDS for 5 inch OPTO Logic display
+// Verdin iMX8M Plus single-channel LVDS for 7 inch OPTO Logic display (SCX0700117GGC03)
 // Extends verdin-imx8mp_panel-cap-touch-10inch-lvds_overlay.dts
 
 /dts-v1/;
@@ -14,21 +14,19 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/pwm/pwm.h>
-#include <dt-bindings/clock/imx8mp-clock.h>
 #include "imx8mp-pinfunc.h"
 
 #include "verdin-imx8mp_optologic_lvds.dtsi"
-#include "display-scx5.dtsi"
+#include "display-scx7.dtsi"
 
 /* Verdin I2C_2_DSI */
 &i2c2 {
-	touch@41 {
-		compatible = "ilitek,ili2132";
-		reg = <0x41>;
+	touch@26 {
+		compatible = "ilitek,ili2117";
+		reg = <0x26>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio &pinctrl_i2s_2_sync_gpio>;
 		interrupt-parent = <&gpio4>;
-		/* ER: edge rising */
 		interrupts = <31 IRQ_TYPE_EDGE_RISING>;
 		reset-gpios = <&gpio4 30 GPIO_ACTIVE_LOW>;
         status = "okay";
@@ -39,5 +37,5 @@
 // See: https://developer.toradex.com/linux-bsp/application-development/multimedia/display-output-resolution-and-timings-linux/#verdin-imx8m-plus-lvds-known-issues
 &media_blk_ctrl {
        assigned-clock-rates = <500000000>, <200000000>,
-                              <0>, <0>, <173250000>; // 24.75MHz*7 (freq used in linux-nxp 5.15)
+                               <0>, <0>, <358400000>; // 51.2MHz*7
 };
