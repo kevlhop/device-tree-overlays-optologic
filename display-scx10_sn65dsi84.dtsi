@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright © 2024 TecInvent
+ * Author: Kevin Detta <kevin.detta@tecinvent.ch>
+ * Author: Dina Gomes Dias <dina.gomes@tecinvent.ch>
+ */
+
+// SCX 10.1inch LVDS Display Dimensions and Timing (SCX1001511GGC49) over SN65DSI84 bridge
+
+&panel_dpi {
+	status = "okay";
+
+	width-mm = <217>;
+	height-mm = <136>;
+
+	// Using timings from the Toradex screen, they are within our specs
+	panel-timing {
+		/*
+		* video_pll1 is at 1039500000, take PLL1/15
+		* otherwise we don't get a picture on NXP i.MX 8M Mini
+		*/
+		clock-frequency = <69300000>;
+		de-active = <1>;
+		hactive = <1280 1280 1280>;
+		hback-porch = <23 60 71>;
+		hfront-porch = <23 60 71>;
+		hsync-len = <15 40 47>;
+		pixelclk-active = <1>; /* positive edge */
+		vactive = <800 800 800>;
+		vback-porch = <5 7 10>;
+		vfront-porch = <5 7 10>;
+		vsync-len = <6 9 12>;
+	};
+};

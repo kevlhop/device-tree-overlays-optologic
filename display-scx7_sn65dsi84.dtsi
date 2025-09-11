@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright © 2024 TecInvent
+ * Author: Kevin Detta <kevin.detta@tecinvent.ch>
+ * Author: Dina Gomes Dias <dina.gomes@tecinvent.ch>
+ */
+
+// SCX 7inch LVDS Display Dimensions and Timing (SCX0700117GGC03) over SN65DSI84 bridge
+
+&panel_dpi {
+	status = "okay";
+
+	width-mm = <154>;
+	height-mm = <86>;
+
+	panel-timing {
+ 		/*
+ 		 * video_pll1 is at 1039500000, take PLL1/20
+ 		 * otherwise we don't get a picture on NXP i.MX 8M Mini
+ 		 */
+		clock-frequency = <51975000>;
+		hactive = <1024>;
+		hfront-porch = <154>;
+		/*
+		 * Use more headroom on the hsync length
+		 * to account for bridge delays
+		 */
+		hsync-len = <32>;
+		hback-porch = <154>;
+		vactive = <600>;
+		vback-porch = <15>;
+		vfront-porch = <15>;
+		vsync-len = <5>;
+		de-active = <1>;
+	};
+};

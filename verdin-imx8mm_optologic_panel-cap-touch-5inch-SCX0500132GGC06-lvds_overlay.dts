@@ -18,7 +18,7 @@
 #include "imx8mm-pinfunc.h"
 
 #include "verdin-imx8mm_optologic_lvds.dtsi"
-#include "display-scx5.dtsi"
+#include "display-scx5_sn65dsi84.dtsi"
 
 &i2c4 {
 	touchscreen@41 {
