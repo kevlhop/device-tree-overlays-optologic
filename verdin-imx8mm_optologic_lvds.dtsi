@@ -11,8 +11,8 @@
 
 &backlight {
 	status = "okay";
-	/* Verdin PWM_3 (SODIMM 16) */
-	pwms = <&pwm3 0 6666667 0>;
+	/* Verdin PWM_3_DSI/PWM_3_DSI_LVDS (SODIMM 19) */
+	pwms = <&pwm1 0 6666667 0>;
 };
 
 &gpu {
@@ -81,9 +81,4 @@
 		fsl,pins =
 			<MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22 0x184>;	/* SODIMM 44 */
 	};
-};
-
-/* Verdin PWM_2 SODIMM 16 */
-&pwm3 {
-	status = "okay";
 };
