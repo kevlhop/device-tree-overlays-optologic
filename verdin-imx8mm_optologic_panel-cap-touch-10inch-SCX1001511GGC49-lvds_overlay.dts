@@ -20,15 +20,15 @@
 #include "verdin-imx8mm_optologic_lvds.dtsi"
 #include "display-scx10.dtsi"
 
-&i2c2 {
-	touch@26 {
+&i2c4 {
+	touchscreen@41 {
 		compatible = "ilitek,ili251x";
-		reg = <0x26>;
+		reg = <0x41>;
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio &pinctrl_i2s_2_sync_gpio>;
+		pinctrl-0 = <&pinctrl_gpio_9_dsi &pinctrl_i2s_2_bclk_touch_reset>;
 		interrupt-parent = <&gpio3>;
-		interrupts = <22 IRQ_TYPE_EDGE_FALLING>;
-		reset-gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
+		interrupts = <15 IRQ_TYPE_EDGE_FALLING>;
+		reset-gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
         status = "okay";
 	};
 };

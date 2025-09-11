@@ -58,27 +58,7 @@
 	};
 };
 
-/* Verdin I2C_2_DSI */
-&i2c2 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	status = "okay";
-	clock-frequency = <100000>;
-};
-
 &reg_dsi_lvds {
 	/* Verdin CTRL_SLEEP_MOCI# (SODIMM 256) */
 	gpio = <&gpio5 1 GPIO_ACTIVE_HIGH>;
-};
-
-&iomuxc {
-	pinctrl_i2s_2_d_in_gpio: gpio3io21grp {
-		fsl,pins =
-			<MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21 0x1c4>;	/* SODIMM 48 */
-	};
-
-	pinctrl_i2s_2_sync_gpio: gpio3io22grp {
-		fsl,pins =
-			<MX8MM_IOMUXC_SAI5_RXD1_GPIO3_IO22 0x184>;	/* SODIMM 44 */
-	};
 };
