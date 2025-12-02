@@ -1,0 +1,38 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright © 2025 OPTO logic Tenchnology S.A.
+ * Author: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+ */
+
+// Verdin iMX95 single-channel LVDS for 7 inch OPTO Logic display (SCX0700117GGC03)
+// Extends verdin-imx95_panel-cap-touch-10inch-lvds_overlay.dts
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+
+#include "verdin-imx95_optologic_lvds.dtsi"
+#include "display-scx7.dtsi"
+
+/* Verdin I2C_2_DSI */
+&lpi2c3 {
+	touch@26 {
+		compatible = "ilitek,ili2117";
+		reg = <0x26>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio>, <&pinctrl_i2s_2_sync_gpio>;
+		/* Verdin I2S_2_SYNC as GPIO (SODIMM 44) */
+		interrupt-parent = <&gpio5>;
+		interrupts = <5 IRQ_TYPE_EDGE_RISING>;
+		/* Verdin I2S_2_D_IN as GPIO (SODIMM 48) */
+		reset-gpios = <&gpio5 7 GPIO_ACTIVE_LOW>;
+		status = "okay";
+	};
+};
+
+&ldb {
+	/* 8*7*pixelclk and 7*pixelclk, pixelclock: 45 MHz */
+	assigned-clock-rates = <2520000000>, <315000000>;
+};
