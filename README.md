@@ -1,7 +1,7 @@
 # OPTO Logic Device Tree Overlays
 
 This repository contains device tree overlays for the OPTO Logic display
-modules, specifically designed for the Verdin AM62 and iMX8MP Toradex platforms.
+modules, specifically designed for Toradex platforms.
 
 These device tree overlays follow the structure provided by Toradex's overlays:
  - https://git.toradex.com/cgit/device-tree-overlays.git/
@@ -19,6 +19,7 @@ We currently support the following Toradex SoMs:
  - `verdin-am62`
  - `verdin-imx8mp`
  - `verdin-imx8mm` (Requires the [Verdin DSI to LVDS adapter](https://www.toradex.com/accessories/verdin-dsi-to-lvds-adapter) with a compatible carrier board)
+ - `verdin-imx95`
  - `colibri-imx8x` (Requires Iris v2.0 carrier board)
 
 These may be combined with the following OPTO Logic displays:
