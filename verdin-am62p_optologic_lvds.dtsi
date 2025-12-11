@@ -1,0 +1,147 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2025 OPTO Logic Technologies S.A.
+ * Author: Aiswarya Kaitheri Kandoth <aiswarya.kandoth@savoirfairelinux.com>
+ */
+
+// Verdin AM62P Optologic Panel Capacitive Touch Common LVDS include file
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pwm/pwm.h>
+#include "k3-pinctrl.h"
+
+/ {
+	compatible = "toradex,verdin-am62p";
+};
+
+&{/} {
+	backlight_lvds_native: backlight-lvds-native {
+		compatible = "pwm-backlight";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_i2s_2_d_out_gpio>;
+		brightness-levels = <0 45 63 88 119 158 203 255>;
+		default-brightness-level = <4>;
+		/* Verdin I2S_2_D_OUT as GPIO (SODIMM 46) */
+		enable-gpios = <&main_gpio0 34 GPIO_ACTIVE_HIGH>;
+		/* Verdin PWM_2 (SODIMM 16) */
+		pwms = <&epwm2 0 6666667 0>;
+		status = "okay";
+	};
+
+	panel_dpi: panel-lvds-native {
+		compatible = "panel-lvds";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		backlight = <&backlight_lvds_native>;
+		data-mapping = "vesa-24";
+
+		port@0 {
+			reg = <0>;
+
+			panel_lvds_in0: endpoint {
+				remote-endpoint = <&oldi0_dss0_out>;
+			};
+		};
+		/* HACK to make oldi1 happy */
+		port@1 {
+			reg = <1>;
+
+			panel_lvds_in1: endpoint {
+				remote-endpoint = <&oldi1_dss0_out>;
+			};
+		};
+	};
+};
+
+
+&dss0 {
+	status = "okay";
+};
+
+&dss0_ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	/* VP1: Output to OLDI */
+	port@0 {
+		reg = <0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		dss0_dpi0_out0: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&oldi0_dss0_in>;
+		};
+		dss0_dpi0_out1: endpoint@1 {
+			reg = <1>;
+			remote-endpoint = <&oldi1_dss0_in>;
+		};
+	};
+};
+
+/* Verdin PWM_1, PWM_2 */
+&epwm2 {
+	status = "okay";
+};
+
+/* Verdin I2C_2_DSI */
+&main_i2c1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+	clock-frequency = <100000>;
+};
+
+&oldi0_dss0 {
+	status = "okay";
+};
+
+&oldi0_dss0_ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	port@0 {
+		reg = <0>;
+		oldi0_dss0_in: endpoint {
+			remote-endpoint = <&dss0_dpi0_out0>;
+		};
+	};
+
+	port@1 {
+		reg = <1>;
+		oldi0_dss0_out: endpoint {
+			remote-endpoint = <&panel_lvds_in0>;
+		};
+	};
+};
+
+/*
+ * HACK: With oldi1 disable oldi always returns EAGAIN making the panel not
+ * show anything, so pretend we are in clone mode.
+ */
+&oldi1_dss0 {
+	status = "okay";
+};
+
+&oldi1_dss0_ports {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	port@0 {
+		reg = <0>;
+		oldi1_dss0_in: endpoint {
+			remote-endpoint = <&dss0_dpi0_out1>;
+		};
+	};
+
+	port@1 {
+		reg = <1>;
+		oldi1_dss0_out: endpoint {
+			remote-endpoint = <&panel_lvds_in1>;
+		};
+	};
+};

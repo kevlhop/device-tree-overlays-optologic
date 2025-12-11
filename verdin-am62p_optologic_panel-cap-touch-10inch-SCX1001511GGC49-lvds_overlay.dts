@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2025 OPTO Logic Technologies S.A.
+ * Author: Aiswarya Kaitheri Kandoth <aiswarya.kandoth@savoirfairelinux.com>
+ */
+
+// Verdin AM62P Optologic Panel Capacitive Touch 10inch LVDS Overlay (SCX1001511GGC49)
+// Extends verdin-am62_panel-cap-touch-10inch-lvds_overlay.dts
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pwm/pwm.h>
+#include "k3-pinctrl.h"
+
+#include "verdin-am62p_optologic_lvds.dtsi"
+#include "display-scx10.dtsi"
+
+/* Verdin I2C_2_DSI */
+&main_i2c1 {
+	touch@41 {
+		compatible = "ilitek,ili251x";
+		reg = <0x41>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_i2s_2_d_in_gpio>, <&pinctrl_i2s_2_sync_gpio>;
+		/* Verdin I2S_2_SYNC as GPIO (SODIMM 44) */
+		interrupt-parent = <&main_gpio0>;
+		interrupts = <37 IRQ_TYPE_EDGE_FALLING>;
+		/* Verdin I2S_2_D_IN as GPIO(SODIMM 48) */
+		reset-gpios = <&main_gpio0 33 GPIO_ACTIVE_LOW>;
+	};
+};
