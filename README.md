@@ -53,4 +53,4 @@ repository](https://github.com/optologic/torizon-optologic).
 
 Please submit any patches and bug reports about this repository to the maintainer:
 
-Maintainer: OPTO Logic Technology S.A. <support@optologic.ch>
+Maintainer: Opto Logic S.A. <support@optologic.ch>
